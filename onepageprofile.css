@@ -66,6 +66,62 @@ header p {
 .download-btn:active {
     transform: translateY(0);
 }
+/* Basic Modal Styles for Resume Download Success */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1000; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    /* Center the modal content using flexbox */
+    justify-content: center;
+    align-items: center;
+}
+
+.modal.show {
+    display: flex; /* Show the modal when it has the 'show' class */
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: auto; /* This will be overridden by flexbox centering, but good for fallback */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Responsive width */
+    max-width: 400px; /* Max width for larger screens */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    text-align: center;
+    position: relative;
+    color: #333;
+}
+
+.modal-content p {
+    margin: 10px 0;
+    font-size: 1.1em;
+}
+
+.close-button {
+    color: #aaa;
+    /* Float removed for absolute positioning */
+    font-size: 28px;
+    font-weight: bold;
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    cursor: pointer;
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
 
 .download-btn.secondary {
     background: linear-gradient(135deg, #3498db, #2980b9);
@@ -595,4 +651,5 @@ section {
     font-size: 1.1rem;
     color: #2c3e50;
     font-weight: bold;
+
 }
