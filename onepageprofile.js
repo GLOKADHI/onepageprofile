@@ -5,18 +5,10 @@
      Config
   ----------------------------*/
   const RESUME_CONFIG = {
-  filename: "Lok_Adhithya_G_Resume.pdf",
-  path: "downloads/Lok_Adhithya_G_Resume.pdf",
-  downloadDelay: 1200
-};
-
-function downloadResume(button) {
-  // simple direct navigation fallback
-  window.location.href = RESUME_CONFIG.path;
-}
-
-document.getElementById('downloadResumeBtn')?.addEventListener('click', () => downloadResume());
-document.getElementById('downloadResumeBtn2')?.addEventListener('click', () => downloadResume());
+    filename: "Lok_Adhithya_G_Resume.pdf",
+    path: "downloads/Lok_Adhithya_G_Resume.pdf",
+    downloadDelay: 1200
+  };
 
   const GITHUB_CONFIG = {
     username: "GLOKADHI",
@@ -108,8 +100,72 @@ document.getElementById('downloadResumeBtn2')?.addEventListener('click', () => d
   }
 
   /* ---------------------------
-     Resume download (unchanged)
+     Resume download
   ----------------------------*/
+  function openResumeInNewTab() {
+    // Prefer opening in a new tab (works well on GitHub Pages)
+    try {
+      const win = window.open(RESUME_CONFIG.path, '_blank', 'noopener');
+      if (win) {
+        win.focus();
+        showSuccessModal();
+        showToast("Opening resume...", "success");
+        return true;
+      }
+    } catch (e) { /* continue to fallback */ }
+    return false;
+  }
+
+  function forceDownloadViaAnchor() {
+    const a = document.createElement('a');
+    a.href = RESUME_CONFIG.path;
+    a.download = RESUME_CONFIG.filename;
+    a.target = '_blank';
+    a.rel = 'noopener';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    showSuccessModal();
+    showToast("Resume download started.", "success");
+  }
+
+  function downloadResumeHandler(event) {
+    const btn = event && event.currentTarget ? event.currentTarget : null;
+    if (btn) {
+      btn.classList.add('loading');
+      btn.disabled = true;
+    }
+
+    // Delay to allow UI animation (if any)
+    setTimeout(() => {
+      const opened = openResumeInNewTab();
+      if (!opened) {
+        // fallback to anchor click
+        forceDownloadViaAnchor();
+      }
+      if (btn) {
+        btn.classList.remove('loading');
+        btn.disabled = false;
+      }
+    }, RESUME_CONFIG.downloadDelay);
+  }
+
+  function setupResumeDownload() {
+    // Attach to elements with exact IDs
+    const ids = ['downloadResumeBtn', 'downloadResumeBtn2'];
+    ids.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.addEventListener('click', downloadResumeHandler);
+    });
+    // Fallback: attach to any element whose id starts with 'downloadResumeBtn' (handles variants)
+    document.querySelectorAll('[id^="downloadResumeBtn"]').forEach(btn => {
+      if (!btn._resumeAttached) {
+        btn.addEventListener('click', downloadResumeHandler);
+        btn._resumeAttached = true;
+      }
+    });
+  }
+
   function showSuccessModal() {
     const modal = document.getElementById('downloadSuccessModal'); if (!modal) return;
     modal.classList.add('show');
@@ -117,45 +173,31 @@ document.getElementById('downloadResumeBtn2')?.addEventListener('click', () => d
     modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('show'); });
   }
 
-  function downloadResume() {
-  const a = document.createElement('a');
-  a.href = RESUME_CONFIG.path;
-  a.download = RESUME_CONFIG.filename; // optional
-  a.target = '_blank';
-  a.rel = 'noopener';
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
-}
-
-  function setupResumeDownload() {
-    document.querySelectorAll('[id^="downloadResumeBtn"]').forEach(btn => {
-      btn.addEventListener('click', () => { if (!btn.disabled) downloadResume(btn); });
-    });
-  }
-
   /* ---------------------------
-     Contact form (kept minimal - now only for the contact form)
+     Contact form
   ----------------------------*/
   async function submitContactForm(e) {
     e.preventDefault();
     const form = e.target; const btn = document.getElementById("submitBtn"); const status = document.getElementById("formStatus");
-    const payload = { name: form.name.value.trim(), email: form.email.value.trim(), subject: form.subject.value.trim(), message: form.message.value.trim() };
+    const payload = { name: form.name?.value.trim() || "", email: form.email?.value.trim() || "", subject: form.subject?.value.trim() || "", message: form.message?.value.trim() || "" };
     if (!payload.name || !payload.email || !payload.subject || !payload.message) {
-      status.className = "form-status error"; status.textContent = "⚠️ Please fill in all fields."; status.style.display = "block"; return;
+      if (status) { status.className = "form-status error"; status.textContent = "⚠️ Please fill in all fields."; status.style.display = "block"; }
+      return;
     }
     try {
-      btn.disabled = true; btn.textContent = "Sending..."; status.style.display = "none";
-      // Simulate a successful submission (replace with actual API call if needed)
+      if (btn) { btn.disabled = true; btn.textContent = "Sending..."; }
+      if (status) status.style.display = "none";
+      // Simulate success; replace with actual network call if needed
       setTimeout(() => {
-        status.className = "form-status success"; status.textContent = "✅ Message sent successfully!"; status.style.display = "block"; form.reset();
+        if (status) { status.className = "form-status success"; status.textContent = "✅ Message sent successfully!"; status.style.display = "block"; }
+        if (form) form.reset();
         showToast("Message sent successfully!", "success");
       }, 1000);
     } catch (err) {
-      status.className = "form-status error"; status.textContent = `❌ Error sending message: ${err.message}`; status.style.display = "block";
+      if (status) { status.className = "form-status error"; status.textContent = `❌ Error sending message.`; status.style.display = "block"; }
       showToast("Failed to send message.", "error");
     } finally {
-      btn.disabled = false; btn.textContent = "Send Message"; setTimeout(() => status.style.display = "none", 5000);
+      if (btn) { btn.disabled = false; btn.textContent = "Send Message"; setTimeout(() => { if (status) status.style.display = "none"; }, 5000); }
     }
   }
 
@@ -272,15 +314,18 @@ document.getElementById('downloadResumeBtn2')?.addEventListener('click', () => d
     const loading = document.getElementById("portfolioLoading");
     const grid = document.getElementById("portfolioGrid");
     const err = document.getElementById("portfolioError");
-    loading.style.display = show ? "flex" : "none";
-    grid.style.display = show ? "none" : (grid.children.length ? "grid" : "none");
-    err.style.display = "none";
+    if (loading) loading.style.display = show ? "flex" : "none";
+    if (grid) grid.style.display = show ? "none" : (grid.children.length ? "grid" : "none");
+    if (err) err.style.display = "none";
   }
 
   function showPortfolioError() {
-    document.getElementById("portfolioError").style.display = "block";
-    document.getElementById("portfolioLoading").style.display = "none";
-    document.getElementById("portfolioGrid").style.display = "none";
+    const err = document.getElementById("portfolioError");
+    const loading = document.getElementById("portfolioLoading");
+    const grid = document.getElementById("portfolioGrid");
+    if (err) err.style.display = "block";
+    if (loading) loading.style.display = "none";
+    if (grid) grid.style.display = "none";
   }
 
   function createProjectElement(repo) {
@@ -313,13 +358,16 @@ document.getElementById('downloadResumeBtn2')?.addEventListener('click', () => d
 
   function renderRepos(repos, fromCache = false, ts = null) {
     const grid = document.getElementById("portfolioGrid");
+    if (!grid) return;
     grid.innerHTML = "";
     if (!Array.isArray(repos) || repos.length === 0) {
       showPortfolioError(); return;
     }
     repos.slice(0, GITHUB_CONFIG.maxRepos).forEach(r => grid.appendChild(createProjectElement(r)));
-    document.getElementById("portfolioLoading").style.display = "none";
-    document.getElementById("portfolioError").style.display = "none";
+    const loading = document.getElementById("portfolioLoading");
+    const err = document.getElementById("portfolioError");
+    if (loading) loading.style.display = "none";
+    if (err) err.style.display = "none";
     grid.style.display = "grid";
     setCacheBadge(fromCache && ts ? ts : (Date.now()));
   }
@@ -407,6 +455,4 @@ document.getElementById('downloadResumeBtn2')?.addEventListener('click', () => d
     fetchAndRenderRepos(false);
   });
 
-
 })();
-
