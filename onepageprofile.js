@@ -5,10 +5,18 @@
      Config
   ----------------------------*/
   const RESUME_CONFIG = {
-    filename: "Lok_Adhithya_G_Resume.pdf",
-    path: "downloads/Lok_Adhithya_G_Resume.pdf",
-    downloadDelay: 1200
-  };
+  filename: "Lok_Adhithya_G_Resume.pdf",
+  path: "downloads/Lok_Adhithya_G_Resume.pdf",
+  downloadDelay: 1200
+};
+
+function downloadResume(button) {
+  // simple direct navigation fallback
+  window.location.href = RESUME_CONFIG.path;
+}
+
+document.getElementById('downloadResumeBtn')?.addEventListener('click', () => downloadResume());
+document.getElementById('downloadResumeBtn2')?.addEventListener('click', () => downloadResume());
 
   const GITHUB_CONFIG = {
     username: "GLOKADHI",
@@ -399,5 +407,6 @@
     setupRepoRefresh();
     fetchAndRenderRepos(false);
   });
+
 
 })();
