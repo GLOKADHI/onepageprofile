@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lok Adhithya G — Profile</title>
+    <link rel="stylesheet" href="onepageprofile.css" />
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <h1>LOK ADHITHYA G</h1>
+        <p>AI & Robotics Engineering Undergraduate • Data & Automation Enthusiast</p>
+
+        <!-- Resume Download Button in Header -->
+        <div class="header-actions">
+            <button id="downloadResumeBtn" class="download-btn" type="button">
+                <span class="btn-icon">📄</span>
+                <span class="btn-text">Download Resume</span>
+                <span class="btn-loader"></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav>
+        <ul>
+            <li><a href="#about">About</a></li>
+            <li><a href="#skills">Skills</a></li>
+            <li><a href="#portfolio">Projects</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- About Section -->
+    <section id="about">
+        <h2 class="section-title">About Me</h2>
+        <div class="about-content">
+            <figure class="about-image">
+                <img
+                    src="images/profile.jpg"
+                    alt="Lok Adhithya G portrait"
+                    data-placeholder="true"
+                >
+                <figcaption>Lok Adhithya G</figcaption>
+            </figure>
+            <div class="about-text">
+                <p>Engineering graduate with a strong foundation in Artificial Intelligence, Data Analytics, and Robotics. I am driven by a passion for developing intelligent systems and data-driven solutions.</p>
+                <p>Skilled in analytical thinking, programming, and innovative problem-solving, I am committed to continuous learning and contributing to transformative, technology-driven projects.</p>
+
+                <!-- Additional Resume Download in About Section -->
+                <div class="about-actions">
+                    <button id="downloadResumeBtn2" class="download-btn secondary" type="button">
+                        <span class="btn-icon">⬇️</span>
+                        <span class="btn-text">Get Full Resume</span>
+                        <span class="btn-loader"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills">
+        <h2 class="section-title">Skills</h2>
+        <div class="skills-grid">
+            <div class="skill-item">
+                <h3>Programming Languages</h3>
+                <p>Python (Advanced), C (Basic), Java (Basic), and SQL for database management.</p>
+            </div>
+            <div class="skill-item">
+                <h3>AI & Machine Learning</h3>
+                <p>Generative AI, LLMs, Model Testing & QA, and tools like TensorFlow & YOLO.</p>
+            </div>
+            <div class="skill-item">
+                <h3>Prompt Engineering</h3>
+                <p>Specialized in prompt design, evaluation, and tuning for generative models.</p>
+            </div>
+            <div class="skill-item">
+                <h3>Core Competencies</h3>
+                <p>Software Automation, Data Visualization, and Automation Framework Development.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio Section with GitHub Integration -->
+    <section id="portfolio">
+        <h2 class="section-title">GitHub Projects</h2>
+
+        <div class="portfolio-header">
+            <p>Automatically fetched from <a href="https://github.com/GLOKADHI?tab=repositories" target="_blank" rel="noopener">@GLOKADHI</a></p>
+
+            <div class="portfolio-controls">
+                <span id="cacheBadge" class="cache-badge" style="display:none;">cached</span>
+                <button id="refreshReposBtn" class="refresh-btn" type="button">
+                    <span class="refresh-icon">🔄</span>
+                    <span class="refresh-text">Refresh</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Loading State -->
+        <div id="portfolioLoading" class="portfolio-loading" aria-hidden="true">
+            <div class="loading-spinner" aria-hidden="true"></div>
+            <p>Loading repositories...</p>
+        </div>
+
+        <!-- Error State -->
+        <div id="portfolioError" class="portfolio-error" style="display: none;">
+            <div class="error-icon">⚠️</div>
+            <h3>Unable to Load Repositories</h3>
+            <p>GitHub API might be temporarily unavailable. Please try <button id="retryReposBtn" class="linkish">retrying</button> or visit <a href="https://github.com/GLOKADHI/" target="_blank">GitHub directly</a>.</p>
+        </div>
+
+        <!-- Projects Grid -->
+        <div id="portfolioGrid" class="portfolio-grid" style="display: none;">
+            <!-- Projects will be dynamically inserted here -->
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <!-- Contact Section -->
+<section id="contact">
+    <h2 class="section-title">Contact Me</h2>
+    <div class="contact-content">
+        <p>If you'd like to get in touch, feel free to reach out via email or phone. I'm always open to discussing new opportunities, collaborations, or just connecting!</p>
+        <!-- New Email and Phone Boxes -->
+        <div class="contact-boxes">
+            <div class="contact-box">
+                <h3>Send Email</h3>
+                <p>Click below to send an email directly to <strong>lok.adhithya@gmail.com</strong>:</p>
+                <a href="https://mail.google.com/mail/u/0/#inbox?compose=new&to=lok.adhithya@gmail.com" target="_blank" class="contact-btn">Open Gmail</a>
+            </div>
+            <div class="contact-box">
+                <h3>Phone Number</h3>
+                <p>Feel free to call or WhatsApp at:</p>
+                <p class="phone-number">+91 9487791281</p>
+            </div>
+        </div>
+    </div>
+</section>
