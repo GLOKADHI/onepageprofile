@@ -117,17 +117,16 @@ document.getElementById('downloadResumeBtn2')?.addEventListener('click', () => d
     modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('show'); });
   }
 
-  function downloadResume(button) {
-    button.classList.add('loading'); button.disabled = true;
-    setTimeout(() => {
-      const a = document.createElement('a'); a.href = RESUME_CONFIG.path; a.download = RESUME_CONFIG.filename; document.body.appendChild(a); a.click(); a.remove();
-      button.classList.remove('loading'); button.classList.add('success');
-      const txt = button.querySelector('.btn-text'); const orig = txt ? txt.textContent : "Download";
-      if (txt) txt.textContent = "Downloaded!";
-      showSuccessModal(); showToast('Resume downloaded successfully!', 'success');
-      setTimeout(() => { button.classList.remove('success'); button.disabled = false; if (txt) txt.textContent = orig; }, 2000);
-    }, RESUME_CONFIG.downloadDelay);
-  }
+  function downloadResume() {
+  const a = document.createElement('a');
+  a.href = RESUME_CONFIG.path;
+  a.download = RESUME_CONFIG.filename; // optional
+  a.target = '_blank';
+  a.rel = 'noopener';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+}
 
   function setupResumeDownload() {
     document.querySelectorAll('[id^="downloadResumeBtn"]').forEach(btn => {
@@ -410,3 +409,4 @@ document.getElementById('downloadResumeBtn2')?.addEventListener('click', () => d
 
 
 })();
+
